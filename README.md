@@ -4,28 +4,6 @@ Zerocarbon.gov is an AI review copilot for UAE regulators. Companies submit thei
 
 ## Architecture
 
-```mermaid
-flowchart LR
-    officer([Government officer]) --> web
+<img src="docs/architecture.png" alt="Architecture: the officer uses the Next.js web app, which calls the Node.js API. The API reads the submitted files, runs deterministic rule checks, scores the risk, and has the AI write the summary and bilingual letter. Reviews, decisions and letters are saved; the OpenRouter LLM is optional." width="480">
 
-    subgraph web [Web app: Next.js]
-        home[Home: drop folder, live run]
-        dash[Review dashboard, decision, letter]
-    end
-
-    web -- "/api" --> api
-
-    subgraph api [API: Node.js + Express]
-        ingest[1. Read files<br/>Excel, PDF, CSV]
-        checks[2. Rule checks<br/>law, maths, peers, satellite]
-        score[3. Risk score and status]
-        ai[4. AI writes summary<br/>and EN/AR letter]
-        ingest --> checks --> score --> ai
-    end
-
-    api --> data[(Demo submissions,<br/>regulations, reference data)]
-    api --> store[(Saved reviews,<br/>decisions, letters)]
-    ai -. optional .-> llm[OpenRouter LLM]
-```
-
-The rule checks are deterministic: the AI explains and drafts, but never sets the status or risk score. Without an API key the app uses cached AI output and templates, so it runs fully offline.
+The rule checks are deterministic: the AI explains and drafts, but never sets the status or risk score. Without an API key the app uses cached AI output and templates, so it runs fully offline. Diagram source: `docs/architecture.mmd`.

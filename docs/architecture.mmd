@@ -1,0 +1,21 @@
+flowchart TD
+    officer(["Government officer"])
+    web["Web app (Next.js): home page, review dashboard, letters"]
+    api["API (Node.js and Express)"]
+    data[("Demo submissions, regulations and reference data")]
+    store[("Saved reviews, decisions and letters")]
+    llm["OpenRouter LLM (optional)"]
+
+    subgraph pipeline["Review pipeline"]
+        direction LR
+        read["Read the files: Excel, PDF, CSV"] --> checks["Rule checks: law, maths, peers, satellite"]
+        checks --> score["Risk score and status"]
+        score --> write["AI writes the summary and bilingual letter"]
+    end
+
+    officer --> web
+    web -->|"API calls"| api
+    api --> read
+    data --> read
+    write --> store
+    write -.-> llm
