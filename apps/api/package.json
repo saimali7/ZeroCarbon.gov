@@ -1,0 +1,27 @@
+{
+  "name": "@zerocarbon/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test test/*.test.ts"
+  },
+  "dependencies": {
+    "@zerocarbon/shared": "*",
+    "express": "5.2.1",
+    "fflate": "0.8.3",
+    "multer": "2.4.0",
+    "tsx": "4.23.13",
+    "unpdf": "1.4.0",
+    "zod": "4.6.2"
+  },
+  "devDependencies": {
+    "@types/express": "5.0.6",
+    "@types/multer": "2.2.0",
+    "@types/node": "24.13.4",
+    "typescript": "5.9.3"
+  }
+}

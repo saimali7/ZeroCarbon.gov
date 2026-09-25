@@ -1,0 +1,35 @@
+# dependencies
+node_modules/
+
+# next.js
+.next/
+out/
+next-env.d.ts
+
+# builds
+dist/
+build/
+*.tsbuildinfo
+
+# runtime state (reviews, decisions, letters, uploads)
+.data/
+
+# env files: .env is generated from .env.example on first run
+.env
+.env.*
+!.env.example
+
+# logs
+npm-debug.log*
+*.log
+
+# python (dev-only generators)
+__pycache__/
+*.pyc
+.venv/
+
+# misc
+.DS_Store
+*.pem
+coverage/
+.vercel

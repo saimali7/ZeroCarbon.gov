@@ -1,0 +1,24 @@
+{
+  "name": "zerocarbon-gov",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI review copilot that helps UAE regulators check facility emissions reports under Federal Decree-Law No. 11 of 2024.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
+  },
+  "scripts": {
+    "start": "node scripts/start.mjs",
+    "dev": "node scripts/start.mjs --dev",
+    "prepare:app": "node scripts/start.mjs --prepare",
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present"
+  }
+}

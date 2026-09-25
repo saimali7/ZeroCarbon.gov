@@ -1,0 +1,11 @@
+ead_facility_id,facility,reporting_year,item,description,activity,unit,co2_t,ch4_t,tco2e
+AD-OG-0412,Eastern Dunes CPF-1,2024,SS-01,Fuel gas,77000000,Sm3,158141,,158141
+AD-OG-0412,Eastern Dunes CPF-1,2024,SS-02/03,"Flare gas (HP + LP), metered",28100000,Sm3,67918,,67918
+AD-OG-0412,Eastern Dunes CPF-1,2024,SS-04,Diesel,1080.0,t,3441,,3441
+AD-OG-0412,Eastern Dunes CPF-1,2024,CH4,All methane sources reported,,,,619.2,17338
+AD-OG-0412,Eastern Dunes CPF-1,2024,TOTAL,"Total (production 19.42 MMboe, 12.71 kg CO2e/boe)",,,,,246838
+AD-OG-0417,Southern Dunes CPF-2,2024,SS-01,Fuel gas,96100000,Sm3,195970,,195970
+AD-OG-0417,Southern Dunes CPF-2,2024,SS-02/03,"Flare gas (HP + LP), metered",36800000,Sm3,90822,,90822
+AD-OG-0417,Southern Dunes CPF-2,2024,SS-04,Diesel,1380.0,t,4397,,4397
+AD-OG-0417,Southern Dunes CPF-2,2024,CH4,All methane sources reported,,,,386.2,10814
+AD-OG-0417,Southern Dunes CPF-2,2024,TOTAL,"Total (production 25.19 MMboe, 11.99 kg CO2e/boe)",,,,,302003

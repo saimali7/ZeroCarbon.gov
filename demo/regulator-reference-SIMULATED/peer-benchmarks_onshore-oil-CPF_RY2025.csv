@@ -1,0 +1,9 @@
+ead_facility_id,operator,facility,emirate,lat,lon,reporting_year,production_mmboe,reported_tco2e,co2_t,ch4_t,intensity_kgco2e_per_boe,ch4_intensity_t_per_mmboe,flared_sm3_per_boe,methane_sources_quantified,verification_opinion
+AD-OG-0391,Red Sand Oil Operations,Red Sand North CPF,Abu Dhabi,23.412,53.884,2025,31.8,426120,395757,1084.4,13.4,34.1,1.52,9,Unmodified
+AD-OG-0396,Palm Ridge Petroleum,Palm Ridge CPF-1,Abu Dhabi,23.206,54.402,2025,22.6,334480,306637,994.4,14.8,44.0,1.71,8,Unmodified
+AD-OG-0403,Wadi Basin Energy,Basin Central CPF,Abu Dhabi,22.957,53.612,2025,18.9,224910,210991,497.1,11.9,26.3,1.18,9,Unmodified
+AD-OG-0408,Salt Flat Petroleum,Sabkha West GOSP,Abu Dhabi,23.588,53.521,2025,14.2,230040,209205,744.1,16.2,52.4,1.93,7,Unmodified
+AD-OG-0412,Dunes Energy Company,Eastern Dunes CPF-1,Abu Dhabi,23.052,54.618,2025,19.21,242693,225851,601.5,12.63,31.3,1.42,9,Unmodified
+AD-OG-0417,Dunes Energy Company,Southern Dunes CPF-2,Abu Dhabi,22.814,54.1375,2025,25.82,274896,267496,264.3,10.65,10.2,0.97,3,Qualified
+AD-OG-0421,Horizon Desert Oil,Horizon CPF-3,Abu Dhabi,22.731,54.781,2025,27.5,382250,352836,1050.5,13.9,38.2,1.47,9,Unmodified
+AD-OG-0426,Red Sand Oil Operations,Red Sand South CPF,Abu Dhabi,23.301,53.963,2025,20.4,257040,240475,591.6,12.6,29.0,1.33,8,Unmodified

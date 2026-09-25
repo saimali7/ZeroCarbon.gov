@@ -1,0 +1,792 @@
+{
+  "type": "FeatureCollection",
+  "name": "Simulated satellite methane detections",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          54.618,
+          23.052
+        ]
+      },
+      "properties": {
+        "kind": "facility",
+        "ead_facility_id": "AD-OG-0412",
+        "facility": "Eastern Dunes CPF-1",
+        "operator": "Dunes Energy Company"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          54.61429,
+          23.055054
+        ]
+      },
+      "properties": {
+        "kind": "equipment",
+        "ead_facility_id": "AD-OG-0412",
+        "equipment": "HP flare FL-501"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          54.618879,
+          23.050563
+        ]
+      },
+      "properties": {
+        "kind": "equipment",
+        "ead_facility_id": "AD-OG-0412",
+        "equipment": "Tank farm T-401A/B"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          54.619562,
+          23.052853
+        ]
+      },
+      "properties": {
+        "kind": "equipment",
+        "ead_facility_id": "AD-OG-0412",
+        "equipment": "Vent stack V-210"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          54.619904,
+          23.052674
+        ]
+      },
+      "properties": {
+        "kind": "plume_source",
+        "detection_id": "SIM-2025-0409-E1",
+        "datetime_utc": "2025-04-09T09:34:18Z",
+        "local_time_gst": "13:34",
+        "emission_rate_kg_ch4_per_h": 610,
+        "uncertainty_kg_per_h": 280,
+        "confidence": "Medium",
+        "wind_from_deg": 320,
+        "wind_speed_m_s": 4.1,
+        "plume_length_m": 1100,
+        "nearest_facility_id": "AD-OG-0412",
+        "nearest_facility": "Eastern Dunes CPF-1",
+        "nearest_equipment": "Vent stack V-210",
+        "distance_to_equipment_m": 40,
+        "instrument": "SIMULATED point-source methane imager (modelled on public hyperspectral plume products)",
+        "note": "Simulated for the ZeroCarbon.gov demo. A satellite detection is a signal to investigate, not proof of non-compliance."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              54.619904,
+              23.052674
+            ],
+            [
+              54.619873,
+              23.051728
+            ],
+            [
+              54.620001,
+              23.050906
+            ],
+            [
+              54.620209,
+              23.050145
+            ],
+            [
+              54.620493,
+              23.049443
+            ],
+            [
+              54.620855,
+              23.048801
+            ],
+            [
+              54.621299,
+              23.048223
+            ],
+            [
+              54.621827,
+              23.047709
+            ],
+            [
+              54.622436,
+              23.047258
+            ],
+            [
+              54.623125,
+              23.046869
+            ],
+            [
+              54.623891,
+              23.046538
+            ],
+            [
+              54.624733,
+              23.046268
+            ],
+            [
+              54.62569,
+              23.046085
+            ],
+            [
+              54.626314,
+              23.045645
+            ],
+            [
+              54.626807,
+              23.045104
+            ],
+            [
+              54.626807,
+              23.045104
+            ],
+            [
+              54.626314,
+              23.045645
+            ],
+            [
+              54.625951,
+              23.046286
+            ],
+            [
+              54.625921,
+              23.047185
+            ],
+            [
+              54.625778,
+              23.047995
+            ],
+            [
+              54.625557,
+              23.048746
+            ],
+            [
+              54.62526,
+              23.049438
+            ],
+            [
+              54.624884,
+              23.050069
+            ],
+            [
+              54.624425,
+              23.050636
+            ],
+            [
+              54.623883,
+              23.051139
+            ],
+            [
+              54.623259,
+              23.051579
+            ],
+            [
+              54.622557,
+              23.051958
+            ],
+            [
+              54.621778,
+              23.052278
+            ],
+            [
+              54.620921,
+              23.052538
+            ],
+            [
+              54.619904,
+              23.052674
+            ],
+            [
+              54.619904,
+              23.052674
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "plume_extent",
+        "detection_id": "SIM-2025-0409-E1"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          54.1375,
+          22.814
+        ]
+      },
+      "properties": {
+        "kind": "facility",
+        "ead_facility_id": "AD-OG-0417",
+        "facility": "Southern Dunes CPF-2",
+        "operator": "Dunes Energy Company"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          54.133407,
+          22.817414
+        ]
+      },
+      "properties": {
+        "kind": "equipment",
+        "ead_facility_id": "AD-OG-0417",
+        "equipment": "HP flare FL-501"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          54.13711,
+          22.812653
+        ]
+      },
+      "properties": {
+        "kind": "equipment",
+        "ead_facility_id": "AD-OG-0417",
+        "equipment": "Tank farm T-401A/B"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          54.138864,
+          22.814719
+        ]
+      },
+      "properties": {
+        "kind": "equipment",
+        "ead_facility_id": "AD-OG-0417",
+        "equipment": "Vent stack V-210"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          54.133748,
+          22.817234
+        ]
+      },
+      "properties": {
+        "kind": "plume_source",
+        "detection_id": "SIM-2025-0714-S1",
+        "datetime_utc": "2025-07-14T09:31:12Z",
+        "local_time_gst": "13:31",
+        "emission_rate_kg_ch4_per_h": 1820,
+        "uncertainty_kg_per_h": 610,
+        "confidence": "High",
+        "wind_from_deg": 315,
+        "wind_speed_m_s": 5.2,
+        "plume_length_m": 1650,
+        "nearest_facility_id": "AD-OG-0417",
+        "nearest_facility": "Southern Dunes CPF-2",
+        "nearest_equipment": "HP flare FL-501",
+        "distance_to_equipment_m": 40,
+        "instrument": "SIMULATED point-source methane imager (modelled on public hyperspectral plume products)",
+        "note": "Simulated for the ZeroCarbon.gov demo. A satellite detection is a signal to investigate, not proof of non-compliance."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              54.133748,
+              22.817234
+            ],
+            [
+              54.133836,
+              22.815817
+            ],
+            [
+              54.134144,
+              22.814605
+            ],
+            [
+              54.134562,
+              22.813492
+            ],
+            [
+              54.135085,
+              22.812477
+            ],
+            [
+              54.135716,
+              22.811562
+            ],
+            [
+              54.136461,
+              22.810751
+            ],
+            [
+              54.137321,
+              22.810046
+            ],
+            [
+              54.138294,
+              22.809446
+            ],
+            [
+              54.139377,
+              22.808947
+            ],
+            [
+              54.140566,
+              22.808546
+            ],
+            [
+              54.141861,
+              22.808242
+            ],
+            [
+              54.143314,
+              22.808084
+            ],
+            [
+              54.144306,
+              22.807502
+            ],
+            [
+              54.145119,
+              22.806753
+            ],
+            [
+              54.145119,
+              22.806753
+            ],
+            [
+              54.144306,
+              22.807502
+            ],
+            [
+              54.143675,
+              22.808417
+            ],
+            [
+              54.143503,
+              22.809756
+            ],
+            [
+              54.143174,
+              22.81095
+            ],
+            [
+              54.142738,
+              22.812045
+            ],
+            [
+              54.142197,
+              22.813044
+            ],
+            [
+              54.141546,
+              22.813941
+            ],
+            [
+              54.140781,
+              22.814733
+            ],
+            [
+              54.139902,
+              22.81542
+            ],
+            [
+              54.138909,
+              22.816002
+            ],
+            [
+              54.137807,
+              22.816484
+            ],
+            [
+              54.1366,
+              22.816868
+            ],
+            [
+              54.135285,
+              22.817153
+            ],
+            [
+              54.133748,
+              22.817234
+            ],
+            [
+              54.133748,
+              22.817234
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "plume_extent",
+        "detection_id": "SIM-2025-0714-S1"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          54.133748,
+          22.817234
+        ]
+      },
+      "properties": {
+        "kind": "plume_source",
+        "detection_id": "SIM-2025-0802-S2",
+        "datetime_utc": "2025-08-02T09:36:40Z",
+        "local_time_gst": "13:36",
+        "emission_rate_kg_ch4_per_h": 940,
+        "uncertainty_kg_per_h": 380,
+        "confidence": "Medium",
+        "wind_from_deg": 300,
+        "wind_speed_m_s": 3.8,
+        "plume_length_m": 1250,
+        "nearest_facility_id": "AD-OG-0417",
+        "nearest_facility": "Southern Dunes CPF-2",
+        "nearest_equipment": "HP flare FL-501",
+        "distance_to_equipment_m": 40,
+        "instrument": "SIMULATED point-source methane imager (modelled on public hyperspectral plume products)",
+        "note": "Simulated for the ZeroCarbon.gov demo. A satellite detection is a signal to investigate, not proof of non-compliance."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              54.133748,
+              22.817234
+            ],
+            [
+              54.134113,
+              22.816213
+            ],
+            [
+              54.134597,
+              22.815382
+            ],
+            [
+              54.13514,
+              22.814643
+            ],
+            [
+              54.135738,
+              22.813995
+            ],
+            [
+              54.136395,
+              22.813439
+            ],
+            [
+              54.137112,
+              22.81298
+            ],
+            [
+              54.137891,
+              22.81262
+            ],
+            [
+              54.138731,
+              22.812357
+            ],
+            [
+              54.13963,
+              22.812187
+            ],
+            [
+              54.140585,
+              22.812108
+            ],
+            [
+              54.141598,
+              22.812121
+            ],
+            [
+              54.142694,
+              22.812267
+            ],
+            [
+              54.143544,
+              22.812021
+            ],
+            [
+              54.144298,
+              22.811619
+            ],
+            [
+              54.144298,
+              22.811619
+            ],
+            [
+              54.143544,
+              22.812021
+            ],
+            [
+              54.142888,
+              22.812576
+            ],
+            [
+              54.142477,
+              22.813525
+            ],
+            [
+              54.141982,
+              22.814339
+            ],
+            [
+              54.14143,
+              22.815062
+            ],
+            [
+              54.140822,
+              22.815695
+            ],
+            [
+              54.140155,
+              22.816233
+            ],
+            [
+              54.139427,
+              22.816675
+            ],
+            [
+              54.138637,
+              22.817018
+            ],
+            [
+              54.137787,
+              22.817265
+            ],
+            [
+              54.136878,
+              22.817418
+            ],
+            [
+              54.135913,
+              22.817482
+            ],
+            [
+              54.13489,
+              22.817453
+            ],
+            [
+              54.133748,
+              22.817234
+            ],
+            [
+              54.133748,
+              22.817234
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "plume_extent",
+        "detection_id": "SIM-2025-0802-S2"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          54.137451,
+          22.812473
+        ]
+      },
+      "properties": {
+        "kind": "plume_source",
+        "detection_id": "SIM-2025-1019-S3",
+        "datetime_utc": "2025-10-19T09:28:05Z",
+        "local_time_gst": "13:28",
+        "emission_rate_kg_ch4_per_h": 710,
+        "uncertainty_kg_per_h": 300,
+        "confidence": "Medium",
+        "wind_from_deg": 330,
+        "wind_speed_m_s": 4.4,
+        "plume_length_m": 1050,
+        "nearest_facility_id": "AD-OG-0417",
+        "nearest_facility": "Southern Dunes CPF-2",
+        "nearest_equipment": "Tank farm T-401A/B",
+        "distance_to_equipment_m": 40,
+        "instrument": "SIMULATED point-source methane imager (modelled on public hyperspectral plume products)",
+        "note": "Simulated for the ZeroCarbon.gov demo. A satellite detection is a signal to investigate, not proof of non-compliance."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              54.137451,
+              22.812473
+            ],
+            [
+              54.137252,
+              22.811589
+            ],
+            [
+              54.137225,
+              22.810797
+            ],
+            [
+              54.137283,
+              22.81005
+            ],
+            [
+              54.137423,
+              22.809346
+            ],
+            [
+              54.137648,
+              22.808688
+            ],
+            [
+              54.137961,
+              22.808076
+            ],
+            [
+              54.138363,
+              22.807512
+            ],
+            [
+              54.138854,
+              22.806996
+            ],
+            [
+              54.139431,
+              22.806525
+            ],
+            [
+              54.140089,
+              22.806097
+            ],
+            [
+              54.140831,
+              22.805714
+            ],
+            [
+              54.141696,
+              22.805396
+            ],
+            [
+              54.142202,
+              22.804888
+            ],
+            [
+              54.142568,
+              22.804304
+            ],
+            [
+              54.142568,
+              22.804304
+            ],
+            [
+              54.142202,
+              22.804888
+            ],
+            [
+              54.141977,
+              22.805546
+            ],
+            [
+              54.142111,
+              22.806395
+            ],
+            [
+              54.142122,
+              22.807179
+            ],
+            [
+              54.14205,
+              22.807919
+            ],
+            [
+              54.141896,
+              22.808615
+            ],
+            [
+              54.141656,
+              22.809265
+            ],
+            [
+              54.141327,
+              22.809868
+            ],
+            [
+              54.140909,
+              22.810423
+            ],
+            [
+              54.140403,
+              22.810932
+            ],
+            [
+              54.139812,
+              22.811395
+            ],
+            [
+              54.139139,
+              22.811815
+            ],
+            [
+              54.138381,
+              22.81219
+            ],
+            [
+              54.137451,
+              22.812473
+            ],
+            [
+              54.137451,
+              22.812473
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "plume_extent",
+        "detection_id": "SIM-2025-1019-S3"
+      }
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+/*
+ * ZeroCarbon.gov design tokens. Palette and type follow the UAE Government visual
+ * language used in the reference prototype: white surfaces on a light grey page,
+ * a single gold accent, Roboto with Noto Kufi Arabic. Light theme only.
+ * The default Tailwind palette is removed so every color comes from these roles.
+ */
+@theme {
+  --color-*: initial;
+  --color-white: #ffffff;
+
+  --color-page: #f7f7f7;
+  --color-surface: #ffffff;
+  --color-sunken: #fafafa;
+
+  --color-ink: #232528;
+  --color-ink-2: #3e4046;
+  --color-ink-muted: #545865;
+  --color-ink-faint: #8a8d93;
+
+  --color-line: #e1e3e5;
+  --color-line-soft: #eff0f1;
+  --color-line-strong: #c9ccd1;
+
+  /* Accent: UAE gold. 500 is the base; 600/700 for hover and text on tints. */
+  --color-gold-50: #f9f7ed;
+  --color-gold-100: #f2eccf;
+  --color-gold-200: #e6d7a2;
+  --color-gold-300: #d7bf73;
+  --color-gold-500: #b68a35;
+  --color-gold-600: #92722a;
+  --color-gold-700: #7c5e24;
+  --color-gold-800: #6c4527;
+  --color-gold-900: #5d3b26;
+
+  /* Positive: compliant, passed, received. */
+  --color-ok-50: #f3faf4;
+  --color-ok-100: #e4f4e7;
+  --color-ok-200: #cae8cf;
+  --color-ok-600: #2e7d46;
+  --color-ok-700: #256b3a;
+
+  /* Negative: non-compliant, breach, critical. */
+  --color-bad-50: #fef2f2;
+  --color-bad-100: #fde4e3;
+  --color-bad-200: #fdcdcb;
+  --color-bad-500: #d83731;
+  --color-bad-700: #b52520;
+  --color-bad-800: #95231f;
+
+  --font-sans: "Roboto Variable", "Roboto", ui-sans-serif, system-ui, sans-serif;
+  --font-arabic: "Noto Kufi Arabic Variable", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+
+  --radius-control: 8px;
+  --radius-field: 10px;
+  --radius-card: 12px;
+
+  --shadow-raised: 0 1px 2px rgb(35 37 40 / 0.05), 0 1px 3px rgb(35 37 40 / 0.05);
+  --shadow-overlay: 0 24px 64px rgb(35 37 40 / 0.2), 0 2px 8px rgb(35 37 40 / 0.08);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+:lang(ar) {
+  font-family: var(--font-arabic);
+}
+
+::selection {
+  background: var(--color-gold-100);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold-500);
+  outline-offset: 2px;
+}
+
+dialog::backdrop {
+  background: rgb(35 37 40 / 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  body {
+    background: #ffffff;
+  }
+}
