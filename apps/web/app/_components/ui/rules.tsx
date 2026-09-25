@@ -44,10 +44,10 @@ export function RuleChip({ ruleId, className = "" }: { ruleId: string; className
           onClick={toggle}
           aria-expanded={open}
           aria-controls={open ? id : undefined}
-          className={`inline-flex h-6 items-center gap-1.5 whitespace-nowrap rounded-full border border-gold-200 bg-gold-50 px-2.5 text-xs font-medium text-gold-800 transition-colors hover:border-gold-300 hover:bg-gold-100 ${className}`}
+          className={`inline-flex min-h-6 max-w-full items-center gap-1.5 rounded-full border border-gold-200 bg-gold-50 px-2.5 py-0.5 text-left text-xs font-medium leading-snug text-gold-800 transition-colors hover:border-gold-300 hover:bg-gold-100 ${className}`}
         >
-          <Scales size={13} weight="bold" aria-hidden />
-          {label}
+          <Scales size={13} weight="bold" aria-hidden className="shrink-0" />
+          <span className="min-w-0">{label}</span>
         </button>
       )}
     >

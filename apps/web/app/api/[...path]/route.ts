@@ -8,6 +8,8 @@ const HOP_BY_HOP_HEADERS = new Set([
   "connection",
   "content-encoding",
   "content-length",
+  // Node's fetch rejects "Expect: 100-continue" (sent by curl and some clients for large uploads).
+  "expect",
   "host",
   "keep-alive",
   "proxy-authenticate",

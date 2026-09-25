@@ -123,6 +123,8 @@ export function SatellitePanel({
           ? `It was seen ${String(parts[0]).replace(/^1 /, "")}.`
           : `${parts.join(", ")}.`
         : "The submission has no flare log to cross-check these dates.";
+  // Red only when the flare log does not explain the selected plume; otherwise selection is shown in gold.
+  const alert = selected ? ["pilot_out", "no_event"].includes(checks.get(selected.id)!.match) : false;
   const tone = detections.length === 0 || (count("pilot_out") === 0 && count("no_event") === 0 && !!flareLog) ? "ok" : "bad";
 
   const equipment = site?.equipment ?? [];
@@ -141,7 +143,7 @@ export function SatellitePanel({
         <div className={`grid gap-5 ${detections.length ? "md:grid-cols-[minmax(0,1fr)_18rem]" : ""}`}>
           <figure className="flex min-w-0 flex-col gap-3">
             {lat !== undefined && lon !== undefined ? (
-              <SiteMap center={{ lat, lon }} facilityName={detail.facilityShortName} equipment={equipment} detections={detections} selectedId={selected?.id} ariaLabel={ariaLabel} />
+              <SiteMap center={{ lat, lon }} facilityName={detail.facilityShortName} equipment={equipment} detections={detections} selectedId={selected?.id} alert={alert} ariaLabel={ariaLabel} />
             ) : (
               <Notice tone="neutral">No site location is available for this facility, so the map cannot be drawn.</Notice>
             )}
@@ -150,13 +152,17 @@ export function SatellitePanel({
                 <LegendItem swatch={<rect x="4.5" y="1.5" width="9" height="9" rx="1.5" fill="var(--color-ink-2)" />}>Equipment</LegendItem>
                 {detections.length > 0 && (
                   <>
-                    <LegendItem swatch={<path d="M2 6 Q9 -1 16 4 Q12 11 2 6 Z" fill="var(--color-bad-500)" fillOpacity="0.3" stroke="var(--color-bad-700)" />}>Selected plume</LegendItem>
+                    <LegendItem
+                      swatch={<path d="M2 6 Q9 -1 16 4 Q12 11 2 6 Z" fill={alert ? "var(--color-bad-500)" : "var(--color-gold-500)"} fillOpacity="0.3" stroke={alert ? "var(--color-bad-700)" : "var(--color-gold-700)"} />}
+                    >
+                      Selected plume
+                    </LegendItem>
                     {detections.length > 1 && (
                       <LegendItem swatch={<path d="M2 6 Q9 -1 16 4 Q12 11 2 6 Z" fill="var(--color-gold-300)" fillOpacity="0.3" stroke="var(--color-gold-500)" strokeDasharray="2 2" />}>
                         Other plumes
                       </LegendItem>
                     )}
-                    <LegendItem swatch={<circle cx="9" cy="6" r="4" fill="var(--color-bad-700)" />}>Plume source</LegendItem>
+                    <LegendItem swatch={<circle cx="9" cy="6" r="4" fill={alert ? "var(--color-bad-700)" : "var(--color-gold-700)"} />}>Plume source</LegendItem>
                   </>
                 )}
               </Legend>
@@ -179,7 +185,7 @@ export function SatellitePanel({
                         aria-pressed={on}
                         onClick={() => setPicked(d.id)}
                         className={`flex w-full flex-col gap-1 rounded-control border px-3 py-2.5 text-left transition-colors duration-150 ${
-                          on ? "border-bad-200 bg-bad-50" : "border-line bg-surface hover:border-line-strong hover:bg-sunken"
+                          on ? (alert ? "border-bad-200 bg-bad-50" : "border-gold-300 bg-gold-50") : "border-line bg-surface hover:border-line-strong hover:bg-sunken"
                         }`}
                       >
                         <span className="text-[13px] tabular-nums text-ink-muted">

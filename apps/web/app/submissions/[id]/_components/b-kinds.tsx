@@ -1,5 +1,6 @@
-import type { DecisionAction, DocumentKind, EvidenceRef, SubmissionDocument } from "@zerocarbon/shared";
+import type { DecisionAction, DocumentKind, EvidenceRef, FindingCategory, SubmissionDocument } from "@zerocarbon/shared";
 import type { Tone } from "../../../_components/ui/pill";
+import { CATEGORY_LABEL } from "../../../_lib/format";
 
 export const KIND_LABEL: Record<DocumentKind, string> = {
   emissions_report: "Emissions report workbook",
@@ -38,4 +39,9 @@ export function documentLabel(evidence: EvidenceRef, doc?: SubmissionDocument): 
   if (doc) return KIND_LABEL[doc.kind];
   if (evidence.documentId.startsWith("ref-")) return "Regulator reference data";
   return "Submitted document";
+}
+
+/** Category label for findings and checks; "Evidence" alone reads like a heading, so name the cross-check. */
+export function categoryLabel(category: FindingCategory): string {
+  return category === "evidence" ? "Evidence cross-check" : CATEGORY_LABEL[category];
 }

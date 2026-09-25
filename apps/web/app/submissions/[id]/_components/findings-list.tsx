@@ -9,7 +9,7 @@ import { Tonnes } from "../../../_components/ui/figures";
 import { OutcomePill, SeverityPill } from "../../../_components/ui/pill";
 import { RuleChips } from "../../../_components/ui/rules";
 import { Segmented } from "../../../_components/ui/segmented";
-import { CATEGORY_LABEL } from "../../../_lib/format";
+import { categoryLabel } from "./b-kinds";
 import { metricRows } from "./b-metrics";
 
 type Filter = "all" | FindingOutcome;
@@ -175,7 +175,7 @@ function FindingRow({
             <span className="mt-2 flex flex-wrap items-center gap-1.5">
               <SeverityPill severity={finding.severity} />
               <OutcomePill outcome={finding.outcome} />
-              <span className="ml-0.5 text-[13px] text-ink-muted">{CATEGORY_LABEL[finding.category]}</span>
+              <span className="ml-0.5 text-[13px] text-ink-muted">{categoryLabel(finding.category)}</span>
             </span>
           </span>
           {impact && (

@@ -43,13 +43,13 @@ export function ReviewHeader({ detail, running, onRunReview }: { detail: Submiss
               </>
             )}
           </p>
-          <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-3 border-t border-line-soft pt-4 sm:grid-cols-3 xl:grid-cols-6">
+          <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-3 border-t border-line-soft pt-4 sm:flex sm:flex-wrap sm:gap-x-9">
             {meta
               .filter((m) => m.value)
               .map((m) => (
                 <div key={m.label} className="min-w-0">
                   <dt className="text-xs text-ink-muted">{m.label}</dt>
-                  <dd className={`mt-0.5 truncate text-sm font-medium text-ink ${m.mono ? "font-mono text-[13px]" : ""}`}>{m.value}</dd>
+                  <dd className={`mt-0.5 text-sm [overflow-wrap:anywhere] font-medium text-ink ${m.mono ? "font-mono text-[13px]" : ""}`}>{m.value}</dd>
                 </div>
               ))}
           </dl>
@@ -94,7 +94,7 @@ function Verdict({ detail, review, running, onRunReview }: { detail: SubmissionD
           </div>
         )}
         <p className="mt-1 text-sm text-ink-2">
-          Reviewed in <span className="font-semibold tabular-nums text-ink">{formatDuration(review.durationMs)}</span>
+          Reviewed in <span className="font-semibold tabular-nums text-ink">{review.durationMs < 100 ? "under 0.1 s" : formatDuration(review.durationMs)}</span>
           <span className="block text-[13px] text-ink-muted tabular-nums">{formatDateTime(review.createdAt)}</span>
         </p>
         <p className="flex items-start gap-1.5 text-[13px] leading-snug text-ink-muted">
@@ -111,6 +111,6 @@ function Verdict({ detail, review, running, onRunReview }: { detail: SubmissionD
 
 function provenance(review: Review): string {
   if (review.narrativeSource === "llm") return review.model ? `AI narrative, generated live with ${review.model}` : "AI narrative, generated live";
-  if (review.narrativeSource === "cache") return "AI narrative, cached for offline demo";
-  return review.aiMode === "live" ? "Template narrative, the AI model was unavailable" : "Template narrative, offline demo mode";
+  if (review.narrativeSource === "cache") return "AI narrative, prepared in advance for offline use";
+  return review.aiMode === "live" ? "Narrative from standard wording, the AI model was unavailable" : "Narrative from standard wording, offline mode";
 }

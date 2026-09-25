@@ -266,6 +266,27 @@ function CsvView({ data, evidence }: ViewProps) {
   );
 }
 
+const MONTHS = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+
+/**
+ * Workbook text lines look like "8: M-04 | Crude storage tanks | ...". A line is the cited row when its
+ * line number matches "row 8" in the locator, or its first cell matches `rows` ("M-04", "2025-06..2025-12" for "Jun").
+ */
+function workbookRowMatcher(evidence: EvidenceRef): (line: string) => boolean {
+  const rowNum = /\brow (\d+)\b/i.exec(evidence.locator)?.[1] ?? (/^\d+$/.test(evidence.rows?.trim() ?? "") ? evidence.rows!.trim() : undefined);
+  const matches = rowNum ? null : rowMatcher(evidence.rows);
+  const year = /^(\d{4})-\d{2}/.exec(evidence.rows ?? "")?.[1];
+  return (line) => {
+    const m = /^(\d+):\s*(.*)$/.exec(line);
+    if (!m) return false;
+    if (rowNum) return m[1] === rowNum;
+    if (!matches) return false;
+    const first = m[2].split("|")[0].trim();
+    const month = MONTHS.indexOf(first.toLowerCase().slice(0, 3));
+    return matches(first) || (year !== undefined && first.length <= 9 && month >= 0 && matches(`${year}-${String(month + 1).padStart(2, "0")}`));
+  };
+}
+
 const normalise = (s: string) => s.toLowerCase().replace(/[_\s]+/g, " ").trim();
 const HEADING = /^(#{1,3}\s|sheet\s|={3,}|\[.+\]$)/i;
 
@@ -290,16 +311,19 @@ function TextView({ data, evidence }: ViewProps) {
 
   const sheet = evidence.sheet ? normalise(evidence.sheet) : "";
   const citedBlock = sheet ? blocks.findIndex((b) => b.heading && normalise(b.lines[0]).includes(sheet)) : -1;
+  const rowHit = useMemo(() => workbookRowMatcher(evidence), [evidence]);
   const lineHit = (line: string) => citedBlock < 0 && sheet !== "" && normalise(line).includes(sheet);
   const sheetFound = !sheet || citedBlock >= 0 || blocks.some((b) => b.lines.some(lineHit));
 
   useEffect(() => {
     const c = scrollRef.current;
     const cited = c?.querySelector("[data-cited]");
+    const row = cited?.querySelector("[data-cited]");
     const mark = cited?.querySelector("mark") ?? c?.querySelector("mark");
-    if (mark) scrollWithin(c, mark, "center");
+    if (row) scrollWithin(c, row, "center");
+    else if (mark) scrollWithin(c, mark, "center");
     else scrollWithin(c, cited, 16);
-  }, [evidence.sheet, evidence.quote]);
+  }, [evidence.sheet, evidence.quote, evidence.rows]);
 
   return (
     <ViewFrame
@@ -325,11 +349,18 @@ function TextView({ data, evidence }: ViewProps) {
             data-cited={i === citedBlock || undefined}
             className={`block ${i === citedBlock ? "-mx-3 rounded-control bg-gold-50 px-3 shadow-[inset_3px_0_0_var(--color-gold-500)]" : ""}`}
           >
-            {b.lines.map((line, j) => (
-              <span key={j} data-cited={lineHit(line) || undefined} className={`block min-h-[1lh] ${lineHit(line) ? "bg-gold-100" : ""} ${b.heading && j === 0 ? "font-semibold text-ink" : ""}`}>
-                {highlight(line, pattern)}
-              </span>
-            ))}
+            {b.lines.map((line, j) => {
+              const hit = lineHit(line) || (i === citedBlock && rowHit(line));
+              return (
+                <span
+                  key={j}
+                  data-cited={hit || undefined}
+                  className={`block min-h-[1lh] ${hit ? "-mx-1.5 rounded-sm bg-gold-200 px-1.5 font-medium text-ink" : ""} ${b.heading && j === 0 ? "font-semibold text-ink" : ""}`}
+                >
+                  {highlight(line, pattern)}
+                </span>
+              );
+            })}
           </span>
         ))}
       </pre>

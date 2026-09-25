@@ -35,7 +35,7 @@ export function Popover({
   }, [open]);
 
   return (
-    <span ref={root} className="relative inline-flex">
+    <span ref={root} className="relative inline-flex max-w-full">
       {trigger({ open, toggle: () => setOpen((o) => !o), id })}
       {open && (
         <span

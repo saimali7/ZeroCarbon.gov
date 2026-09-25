@@ -126,7 +126,7 @@ export function StripPlot({
             );
           })}
 
-          <text x={m.left} y={selfLabelY} fontSize="12" fontWeight="600" fill="var(--color-gold-800)">
+          <text x={m.left} y={selfLabelY} fontSize="12" fontWeight="600" fill="var(--color-gold-800)" stroke="var(--color-surface)" strokeWidth="4" strokeLinejoin="round" paintOrder="stroke">
             {self.name}
           </text>
           {hasCorrected && (
@@ -143,7 +143,7 @@ export function StripPlot({
           {hasCorrected && <circle cx={x(self.corrected!)} cy={selfY} r="7" fill="var(--color-surface)" stroke="var(--color-gold-700)" strokeWidth="2" />}
           <circle cx={x(self.value)} cy={selfY} r="8" fill="var(--color-gold-600)" stroke="var(--color-surface)" strokeWidth="2" />
           {placed.map((l) => (
-            <text key={l.key} x={l.cx} y={selfY + 26 + l.dy} fontSize="13" fontWeight={l.key === "reported" ? 600 : 500} textAnchor="middle" fill={l.key === "reported" ? "var(--color-gold-800)" : "var(--color-ink-2)"} className="tabular-nums">
+            <text key={l.key} x={l.cx} y={selfY + 26 + l.dy} fontSize="13" fontWeight={l.key === "reported" ? 600 : 500} textAnchor="middle" fill={l.key === "reported" ? "var(--color-gold-800)" : "var(--color-ink-2)"} stroke="var(--color-surface)" strokeWidth="4" strokeLinejoin="round" paintOrder="stroke" className="tabular-nums">
               {l.text}
             </text>
           ))}

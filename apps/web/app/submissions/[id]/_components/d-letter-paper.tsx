@@ -77,7 +77,7 @@ function toBlocks(text: string): Block[] {
 const dateAr = new Intl.DateTimeFormat("ar-AE-u-nu-latn", { day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Dubai" });
 const formatDateAr = (iso: string | undefined) => (iso ? dateAr.format(new Date(iso)) : "-");
 
-const OFFICER_AR = { name: "نورة الكتبي", role: "موظفة مراجعة القياس والإبلاغ والتحقق", authority: "هيئة البيئة - أبوظبي" };
+const OFFICER_AR = { name: "محمد المزروعي", role: "موظف مراجعة القياس والإبلاغ والتحقق", authority: "هيئة البيئة - أبوظبي" };
 
 const TEXT = {
   en: {
@@ -106,7 +106,7 @@ const TEXT = {
     draft: "مسودة",
     closing: "وتفضلوا بقبول فائق الاحترام والتقدير،",
     pending: "التوقيع بانتظار الاعتماد",
-    approved: (name: string, date: string) => `اعتمدته ${name} بتاريخ ${date}`,
+    approved: (name: string, date: string) => `اعتمده ${name} بتاريخ ${date}`,
     officer: OFFICER_AR,
     date_: formatDateAr,
   },

@@ -19,6 +19,7 @@ import type { AuditEvent, AuditEventType, SubmissionSummary } from "@zerocarbon/
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { api } from "../../_lib/api";
+import { auditActor, auditMessage } from "./audit-text";
 import { formatDateTime, formatInt } from "../../_lib/format";
 import { useResource } from "../../_lib/use-resource";
 import { Button } from "../../_components/ui/button";
@@ -198,9 +199,9 @@ function AuditBody({
                 <td className="px-3 py-3">
                   <SubmissionRef id={e.submissionId} byId={byId} />
                 </td>
-                <td className="px-3 py-3 text-ink-2">{e.actor}</td>
+                <td className="px-3 py-3 text-ink-2">{auditActor(e.actor)}</td>
                 <td className="py-3 pl-3 pr-5 leading-relaxed text-ink-2">
-                  <span className="line-clamp-3 break-words">{e.message}</span>
+                  <span className="line-clamp-3 break-words">{auditMessage(e.message)}</span>
                 </td>
               </tr>
             ))}
@@ -216,10 +217,10 @@ function AuditBody({
                 {formatDateTime(e.createdAt)}
               </time>
             </div>
-            <p className="break-words text-sm leading-relaxed text-ink-2">{e.message}</p>
+            <p className="break-words text-sm leading-relaxed text-ink-2">{auditMessage(e.message)}</p>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] text-ink-muted">
               {e.submissionId && <SubmissionRef id={e.submissionId} byId={byId} />}
-              <span>By {e.actor}</span>
+              <span>By {auditActor(e.actor)}</span>
             </div>
           </li>
         ))}

@@ -8,6 +8,8 @@ const UNIT_SUFFIXES: [string, string][] = [
   ["KgPerH", "kg/h"],
   ["Sm3PerDay", "Sm3/d"],
   ["Tco2e", "t CO2e"],
+  ["Co2eT", "t CO2e"],
+  ["Tco2", "t CO2"],
   ["Co2T", "t CO2"],
   ["Ch4T", "t CH4"],
   ["Sm3", "Sm3"],
@@ -27,6 +29,8 @@ const WORDS: Record<string, string> = {
   ldar: "LDAR",
   yoy: "year-on-year",
   diff: "difference",
+  id: "ID",
+  avg: "average",
 };
 
 function humanise(key: string): string {
@@ -42,6 +46,7 @@ function humanise(key: string): string {
 function formatValue(value: number | string, unit?: string): string {
   if (typeof value === "string") {
     if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return formatDateShort(value);
+    if (/^\d{4}-\d{2}$/.test(value)) return MONTH.format(new Date(`${value}-15T12:00:00Z`));
     return value.charAt(0).toUpperCase() + value.slice(1);
   }
   const text = Number.isInteger(value) ? formatInt(value) : value.toLocaleString("en-US", { maximumFractionDigits: 2 });
@@ -49,11 +54,17 @@ function formatValue(value: number | string, unit?: string): string {
   return unit === "%" ? `${text}%` : `${text} ${unit}`;
 }
 
+const MONTH = new Intl.DateTimeFormat("en-GB", { month: "short", year: "numeric", timeZone: "UTC" });
+
 /** Finding metrics as labelled, formatted rows: { reportedCh4T: 264.3 } → { label: "Reported", value: "264.3 t CH4" }. */
 export function metricRows(metrics: Record<string, number | string>): { key: string; label: string; value: string }[] {
-  return Object.entries(metrics).map(([key, raw]) => {
+  const rows = Object.entries(metrics).map(([key, raw]) => {
     const suffix = UNIT_SUFFIXES.find(([s]) => key.length > s.length && key.endsWith(s) && /[a-z0-9]/.test(key[key.length - s.length - 1]));
     const base = suffix ? key.slice(0, -suffix[0].length) : key;
-    return { key, label: humanise(base), value: formatValue(raw, suffix?.[1]) };
+    return { key, label: humanise(base), unit: suffix?.[1], value: formatValue(raw, suffix?.[1]) };
   });
+  // Several figures of the same quantity ("gap" in Sm3, t CO2, t CH4): name the unit so the labels stay distinct.
+  return rows.map(({ unit, ...row }) =>
+    unit && rows.filter((r) => r.label === row.label).length > 1 ? { ...row, label: `${row.label} (${unit})` } : row,
+  );
 }

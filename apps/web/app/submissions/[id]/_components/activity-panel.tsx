@@ -15,6 +15,7 @@ import {
 import type { AuditEventType } from "@zerocarbon/shared";
 import Link from "next/link";
 import { useId, useMemo, useState } from "react";
+import { auditActor, auditMessage } from "../../../audit/_components/audit-text";
 import { api } from "../../../_lib/api";
 import { formatDateTime } from "../../../_lib/format";
 import { useResource } from "../../../_lib/use-resource";
@@ -73,9 +74,9 @@ export function ActivityPanel({ submissionId, refreshKey }: { submissionId: stri
                       <EventIcon size={14} weight="bold" aria-hidden />
                     </span>
                     <div className="min-w-0 pt-0.5">
-                      <p className="break-words text-[14px] leading-snug text-ink">{e.message}</p>
+                      <p className="break-words text-[14px] leading-snug text-ink">{auditMessage(e.message)}</p>
                       <p className="mt-0.5 text-xs text-ink-muted">
-                        {e.actor} · <time dateTime={e.createdAt}>{formatDateTime(e.createdAt)}</time>
+                        {auditActor(e.actor)} · <time dateTime={e.createdAt}>{formatDateTime(e.createdAt)}</time>
                       </p>
                     </div>
                   </li>

@@ -144,11 +144,18 @@ function issuePoint(f: Finding, c: Ctx, opts: { action?: boolean; provisions?: b
   return { en: en.join(" "), ar: ar.join(" ") };
 }
 
+/** Observation in an approval letter: informational notes skip file references and say once that no action is needed. */
 function notePoint(f: Finding, c: Ctx): Block {
-  const ev = evidence(f);
   const info = f.severity === "info";
+  const ev = info ? { en: "", ar: "" } : evidence(f);
+  const saysNoAction = /no action (is )?(needed|required)/i.test(f.summary);
   return {
-    en: [ensurePeriod(f.title), ensurePeriod(f.summary), ev.en ? `Evidence: ${ev.en}.` : "", info ? "No action is required." : "Please address this in the next reporting cycle."]
+    en: [
+      ensurePeriod(f.title),
+      ensurePeriod(f.summary),
+      ev.en ? `Evidence: ${ev.en}.` : "",
+      info ? (saysNoAction ? "" : "No action is required.") : "Please address this in the next reporting cycle.",
+    ]
       .filter(Boolean)
       .join(" "),
     ar: [

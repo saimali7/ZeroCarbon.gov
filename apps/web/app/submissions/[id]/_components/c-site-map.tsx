@@ -27,6 +27,7 @@ export function SiteMap({
   equipment,
   detections,
   selectedId,
+  alert = true,
   ariaLabel,
 }: {
   center: { lat: number; lon: number };
@@ -34,6 +35,8 @@ export function SiteMap({
   equipment: MapPoint[];
   detections: SatelliteDetection[];
   selectedId?: string;
+  /** Draw the selected plume as a warning (red) rather than a neutral selection (gold). */
+  alert?: boolean;
   ariaLabel: string;
 }) {
   const [ref, width] = useWidth<HTMLDivElement>();
@@ -50,19 +53,46 @@ export function SiteMap({
     ring: (d.plumePolygon?.[0] ?? []).map(([lon, lat]) => project(lon, lat)),
   }));
 
-  // Extent in metres: everything drawn, padded, at least 1.2 km across.
+  const selected = plumes.find((p) => p.d.id === selectedId);
+  const others = plumes.filter((p) => p !== selected);
+  // Downwind unit vector (metres, north up) and the far tip of the selected plume, where its rate label goes.
+  const downwind = selected ? { dx: -Math.sin((selected.d.windFromDeg * Math.PI) / 180), dy: -Math.cos((selected.d.windFromDeg * Math.PI) / 180) } : undefined;
+  const tip = selected
+    ? selected.ring.reduce((far, q) => (Math.hypot(q.x - selected.source.x, q.y - selected.source.y) > Math.hypot(far.x - selected.source.x, far.y - selected.source.y) ? q : far), selected.source)
+    : undefined;
+  const rateText = selected ? `${selected.d.rateKgCh4PerH.toLocaleString("en-US")} kg/h` : "";
+
+  // Drawing area: keeps clear of the north/wind box (top right) and the scale bar (bottom left).
+  const inset = { left: 10, right: 72, top: 10, bottom: 38 };
+  const innerW = Math.max(width - inset.left - inset.right, 120);
+  const H = narrow ? 320 : 400;
+  const innerH = H - inset.top - inset.bottom;
+
+  // Extent in metres: everything drawn, padded, at least 1.2 km across, plus room for the boundary and rate labels.
   const xs = [0, ...equipmentM.map((p) => p.x), ...plumes.flatMap((p) => [p.source.x, ...p.ring.map((q) => q.x)])];
   const ys = [0, ...equipmentM.map((p) => p.y), ...plumes.flatMap((p) => [p.source.y, ...p.ring.map((q) => q.y)])];
-  const pad = 220;
-  let [x0, x1, y0, y1] = [Math.min(...xs) - pad, Math.max(...xs) + pad, Math.min(...ys) - pad, Math.max(...ys) + pad];
   const grow = (a: number, b: number, min: number) => (b - a >= min ? [a, b] : [(a + b) / 2 - min / 2, (a + b) / 2 + min / 2]);
-  [x0, x1] = grow(x0, x1, 1200);
-  [y0, y1] = grow(y0, y1, 1200);
-  const H = Math.round(Math.min(Math.max(width * ((y1 - y0) / (x1 - x0)), narrow ? 260 : 300), narrow ? 360 : 440));
-  const scale = Math.min(width / (x1 - x0), H / (y1 - y0));
-  const cx = (x0 + x1) / 2;
-  const cy = (y0 + y1) / 2;
-  const px = (p: { x: number; y: number }) => ({ x: width / 2 + (p.x - cx) * scale, y: H / 2 - (p.y - cy) * scale });
+  const fit = (extraX: number[], extraY: number[]) => {
+    const pad = 120;
+    let [x0, x1] = grow(Math.min(...xs, ...extraX) - pad, Math.max(...xs, ...extraX) + pad, 1200);
+    let [y0, y1] = grow(Math.min(...ys, ...extraY) - pad, Math.max(...ys, ...extraY) + pad, 1200);
+    const scale = Math.min(innerW / (x1 - x0), innerH / (y1 - y0));
+    [x0, x1] = grow(x0, x1, innerW / scale);
+    [y0, y1] = grow(y0, y1, innerH / scale);
+    return { scale, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2 };
+  };
+  const first = fit([], []);
+  const extraX: number[] = [];
+  const extraY: number[] = equipmentM.length ? [Math.max(...equipmentM.map((e) => e.y)) + 110 + 34 / first.scale] : [];
+  if (tip && downwind) {
+    // Leave room past the plume tip for the rate label.
+    const reach = ((14 + textWidth(rateText, 13)) / first.scale) * 1.1;
+    extraX.push(tip.x + downwind.dx * reach);
+    extraY.push(tip.y + downwind.dy * reach - 14 / first.scale);
+  }
+  const view = fit(extraX, extraY);
+  const { scale, cx, cy } = view;
+  const px = (p: { x: number; y: number }) => ({ x: inset.left + innerW / 2 + (p.x - cx) * scale, y: inset.top + innerH / 2 - (p.y - cy) * scale });
 
   const eqPx = equipmentM.map((e) => ({ ...e, p: px(e) }));
   const boundary = eqPx.length
@@ -74,8 +104,6 @@ export function SiteMap({
       })()
     : undefined;
 
-  const selected = plumes.find((p) => p.d.id === selectedId);
-  const others = plumes.filter((p) => p !== selected);
   const ringPath = (ring: { x: number; y: number }[]) => ring.map((q, i) => `${i ? "L" : "M"}${px(q).x.toFixed(1)},${px(q).y.toFixed(1)}`).join(" ") + " Z";
 
   let scaleM = 500;
@@ -85,8 +113,8 @@ export function SiteMap({
 
   const windTo = selected ? selected.d.windFromDeg + 180 : 0;
   const sourcePx = selected ? px(selected.source) : undefined;
-  const upwind = selected ? { dx: Math.sin((selected.d.windFromDeg * Math.PI) / 180), dy: -Math.cos((selected.d.windFromDeg * Math.PI) / 180) } : undefined;
-  const rateText = selected ? `${selected.d.rateKgCh4PerH.toLocaleString("en-US")} kg/h` : "";
+  const tipPx = tip ? px(tip) : undefined;
+  const strong = alert ? "var(--color-bad-700)" : "var(--color-gold-700)";
 
   return (
     <div ref={ref} className="w-full overflow-hidden rounded-control border border-line">
@@ -105,7 +133,7 @@ export function SiteMap({
           {boundary && (
             <g>
               <rect x={boundary.x} y={boundary.y} width={boundary.w} height={boundary.h} rx="10" fill="var(--color-surface)" fillOpacity="0.7" stroke="var(--color-line-strong)" strokeDasharray="5 4" />
-              <text x={boundary.x + 8} y={boundary.y + 16} fontSize="11" fill="var(--color-ink-muted)">
+              <text x={boundary.x + 2} y={boundary.y - 6} fontSize="11" fill="var(--color-ink-muted)">
                 {narrow ? "Facility (indicative)" : `${facilityName}, facility area (indicative)`}
               </text>
             </g>
@@ -117,7 +145,7 @@ export function SiteMap({
             ) : null,
           )}
           {selected && selected.ring.length > 2 && (
-            <path d={ringPath(selected.ring)} fill="var(--color-bad-500)" fillOpacity="0.26" stroke="var(--color-bad-700)" strokeWidth="1.5" strokeLinejoin="round" />
+            <path d={ringPath(selected.ring)} fill={alert ? "var(--color-bad-500)" : "var(--color-gold-500)"} fillOpacity="0.26" stroke={strong} strokeWidth="1.5" strokeLinejoin="round" />
           )}
 
           {eqPx.map((e) => {
@@ -148,33 +176,28 @@ export function SiteMap({
             const s = px(p.source);
             return <circle key={p.d.id} cx={s.x} cy={s.y} r="4" fill="var(--color-surface)" stroke="var(--color-gold-600)" strokeWidth="2" />;
           })}
-          {selected && sourcePx && upwind && (
+          {selected && sourcePx && (
             <g>
-              <circle cx={sourcePx.x} cy={sourcePx.y} r="10" fill="none" stroke="var(--color-bad-700)" strokeOpacity="0.5" strokeWidth="1.5" />
-              <circle cx={sourcePx.x} cy={sourcePx.y} r="5" fill="var(--color-bad-700)" stroke="var(--color-surface)" strokeWidth="1.5" />
-              <text
-                x={sourcePx.x + upwind.dx * 16}
-                y={sourcePx.y + upwind.dy * 16 + 4}
-                fontSize="13"
-                fontWeight="700"
-                textAnchor={upwind.dx < -0.2 ? "end" : upwind.dx > 0.2 ? "start" : "middle"}
-                fill="var(--color-bad-800)"
-                stroke="var(--color-surface)"
-                strokeWidth="4"
-                strokeLinejoin="round"
-                paintOrder="stroke"
-              >
-                {rateText}
-              </text>
+              <circle cx={sourcePx.x} cy={sourcePx.y} r="10" fill="none" stroke={strong} strokeOpacity="0.5" strokeWidth="1.5" />
+              <circle cx={sourcePx.x} cy={sourcePx.y} r="5" fill={strong} stroke="var(--color-surface)" strokeWidth="1.5" />
             </g>
           )}
-        </g>
-
-        <g transform="translate(22 14)">
-          <path d="M0,0 L6,16 L0,12 L-6,16 Z" fill="var(--color-ink-2)" />
-          <text x="0" y="30" fontSize="11" fontWeight="700" textAnchor="middle" fill="var(--color-ink-2)">
-            N
-          </text>
+          {tipPx && downwind && (
+            <text
+              x={tipPx.x + downwind.dx * 8}
+              y={tipPx.y - downwind.dy * 8 + (downwind.dy < -0.3 ? 12 : downwind.dy > 0.3 ? -2 : 4)}
+              fontSize="13"
+              fontWeight="700"
+              textAnchor={downwind.dx < -0.2 ? "end" : downwind.dx > 0.2 ? "start" : "middle"}
+              fill={alert ? "var(--color-bad-800)" : "var(--color-gold-800)"}
+              stroke="var(--color-surface)"
+              strokeWidth="4"
+              strokeLinejoin="round"
+              paintOrder="stroke"
+            >
+              {rateText}
+            </text>
+          )}
         </g>
 
         <g transform={`translate(14 ${H - 22})`}>
@@ -185,28 +208,35 @@ export function SiteMap({
           </text>
         </g>
 
-        {selected && (
-          <g transform={`translate(${width - 62} 12)`}>
-            <rect width="50" height="68" rx="8" fill="var(--color-surface)" stroke="var(--color-line)" />
-            <circle cx="25" cy="24" r="15" fill="none" stroke="var(--color-line)" />
-            <line
-              x1="25"
-              y1="34"
-              x2="25"
-              y2="15"
-              stroke="var(--color-ink-2)"
-              strokeWidth="2"
-              markerEnd={`url(#${arrowId})`}
-              transform={`rotate(${windTo} 25 24)`}
-            />
-            <text x="25" y="52" fontSize="10" textAnchor="middle" fill="var(--color-ink-muted)">
-              Wind
-            </text>
-            <text x="25" y="63" fontSize="10" fontWeight="600" textAnchor="middle" fill="var(--color-ink-2)">
-              {selected.d.windSpeedMs} m/s
-            </text>
-          </g>
-        )}
+        <g transform={`translate(${width - 62} 10)`}>
+          <rect width="52" height={selected ? 112 : 46} rx="8" fill="var(--color-surface)" stroke="var(--color-line)" />
+          <path d="M26,7 L32,23 L26,19 L20,23 Z" fill="var(--color-ink-2)" />
+          <text x="26" y="37" fontSize="11" fontWeight="700" textAnchor="middle" fill="var(--color-ink-2)">
+            N
+          </text>
+          {selected && (
+            <g transform="translate(1 44)">
+              <line x1="6" x2="44" y1="0" y2="0" stroke="var(--color-line-soft)" />
+              <circle cx="25" cy="24" r="14" fill="none" stroke="var(--color-line)" />
+              <line
+                x1="25"
+                y1="33"
+                x2="25"
+                y2="15"
+                stroke="var(--color-ink-2)"
+                strokeWidth="2"
+                markerEnd={`url(#${arrowId})`}
+                transform={`rotate(${windTo} 25 24)`}
+              />
+              <text x="25" y="51" fontSize="10" textAnchor="middle" fill="var(--color-ink-muted)">
+                Wind
+              </text>
+              <text x="25" y="62" fontSize="10" fontWeight="600" textAnchor="middle" fill="var(--color-ink-2)">
+                {selected.d.windSpeedMs} m/s
+              </text>
+            </g>
+          )}
+        </g>
       </svg>
     </div>
   );

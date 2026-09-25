@@ -21,8 +21,8 @@ const LANG_NAME: Record<Lang, string> = { en: "English", ar: "Arabic" };
 
 const GENERATED_BY: Record<Letter["generatedBy"], string> = {
   llm: "Drafted by AI",
-  cache: "Drafted by AI (cached)",
-  template: "Drafted from template",
+  cache: "Drafted by AI, prepared in advance",
+  template: "Drafted from standard wording",
 };
 
 const toDraft = (letter: Letter, parts: Record<Lang, LetterParts>): Draft => ({
@@ -100,9 +100,10 @@ function LetterReview({
     setError(undefined);
     setStatus(undefined);
     try {
-      // Unchanged text is not resent, so approving does not log a spurious edit.
-      const body = dirty ? { en: content("en"), ar: content("ar") } : {};
-      const res = await api.updateLetter(letter.id, approve ? { ...body, status: "approved", officerName: OFFICER.name } : body);
+      // Only changed languages are sent, so the audit log records exactly what was edited.
+      const changed = (l: Lang) => draft[l].subject !== saved[l].subject || draft[l].main !== saved[l].main;
+      const body = Object.fromEntries(LANGS.filter(changed).map((l) => [l, content(l)]));
+      const res = await api.updateLetter(letter.id, { ...body, officerName: OFFICER.name, ...(approve ? { status: "approved" as const } : {}) });
       setDraft(toDraft(res, { en: splitLetter(res.en.body), ar: splitLetter(res.ar.body) }));
       if (approve) setEditing(false);
       setStatus(approve ? "Letter approved." : "Changes saved.");

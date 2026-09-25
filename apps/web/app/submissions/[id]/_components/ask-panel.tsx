@@ -10,12 +10,22 @@ import { EvidenceChip } from "../../../_components/ui/evidence";
 import { RuleChips } from "../../../_components/ui/rules";
 import { Skeleton } from "../../../_components/ui/states";
 
-const SUGGESTIONS = [
-  "Why is the flare data flagged?",
-  "Which methane sources are missing?",
-  "What did the verifier conclude?",
-  "What should the query letter ask for?",
-];
+const SUGGESTIONS = {
+  issues: ["Why is the flare data flagged?", "Which methane sources are missing?", "What did the verifier conclude?", "What should the query letter ask for?"],
+  compliant: ["Why is this report compliant?", "Was the satellite detection explained?", "How does it compare with peers?", "What did the verifier conclude?"],
+};
+
+/** Offline answers repeat their evidence and rules inline; drop that tail when the same citations are shown as chips. */
+function withoutInlineCitations(paragraph: string, answer: AskResponse): string {
+  let text = paragraph;
+  const cut = (marker: string) => {
+    const i = text.indexOf(marker);
+    if (i > 0) text = text.slice(0, i).trimEnd();
+  };
+  if (answer.citations.length > 0) cut(" Evidence: ");
+  if (answer.ruleIds.length > 0) cut(" Rules: ");
+  return text;
+}
 
 type Turn = { id: number; question: string } & (
   | { status: "loading" }
@@ -24,7 +34,16 @@ type Turn = { id: number; question: string } & (
 );
 
 /** Question and answer thread grounded in the submission, with evidence and rule citations. */
-export function AskPanel({ submissionId, onOpenEvidence }: { submissionId: string; onOpenEvidence: (ref: EvidenceRef) => void }) {
+export function AskPanel({
+  submissionId,
+  compliant = false,
+  onOpenEvidence,
+}: {
+  submissionId: string;
+  /** Picks suggested questions that fit a clean report instead of one with findings. */
+  compliant?: boolean;
+  onOpenEvidence: (ref: EvidenceRef) => void;
+}) {
   const inputId = useId();
   const [turns, setTurns] = useState<Turn[]>([]);
   const [threadFor, setThreadFor] = useState(submissionId);
@@ -38,7 +57,7 @@ export function AskPanel({ submissionId, onOpenEvidence }: { submissionId: strin
   const logRef = useRef<HTMLDivElement>(null);
   const pending = turns.some((t) => t.status === "loading");
   const asked = new Set(turns.map((t) => t.question));
-  const suggestions = SUGGESTIONS.filter((q) => !asked.has(q));
+  const suggestions = SUGGESTIONS[compliant ? "compliant" : "issues"].filter((q) => !asked.has(q));
 
   useEffect(() => {
     const active = controllers.current;
@@ -180,13 +199,16 @@ function TurnView({
 }
 
 function Answer({ answer, onOpenEvidence }: { answer: AskResponse; onOpenEvidence: (ref: EvidenceRef) => void }) {
-  const paragraphs = answer.answer.split(/\n\s*\n/).filter((p) => p.trim());
+  const paragraphs = answer.answer
+    .split(/\n\s*\n/)
+    .map((p) => (answer.source === "offline" ? withoutInlineCitations(p.trim(), answer) : p.trim()))
+    .filter(Boolean);
   return (
     <div className="flex flex-col gap-3">
       <span className="sr-only">Answer: </span>
       {paragraphs.map((p, i) => (
         <p key={i} className="whitespace-pre-line break-words text-[14px] leading-relaxed text-ink">
-          {p.trim()}
+          {p}
         </p>
       ))}
       {answer.citations.length > 0 && (

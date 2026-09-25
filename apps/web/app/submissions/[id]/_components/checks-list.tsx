@@ -5,7 +5,7 @@ import type { CheckStatus, Review } from "@zerocarbon/shared";
 import type { MouseEvent } from "react";
 import { Card, CardHeader } from "../../../_components/ui/card";
 import { Pill } from "../../../_components/ui/pill";
-import { CATEGORY_LABEL } from "../../../_lib/format";
+import { categoryLabel } from "./b-kinds";
 
 const STATUS: Record<CheckStatus, { icon: Icon; className: string; label: string }> = {
   pass: { icon: CheckCircle, className: "text-ok-600", label: "Passed" },
@@ -15,9 +15,11 @@ const STATUS: Record<CheckStatus, { icon: Icon; className: string; label: string
   error: { icon: WarningOctagon, className: "text-bad-700", label: "Could not run" },
 };
 
-/** Every check the review ran, with its result and links to the findings it produced. */
+const ORDER: CheckStatus[] = ["fail", "error", "warning", "pass", "not_applicable"];
+
+/** Every check the review ran, problems first, with its result and links to the findings it produced. */
 export function ChecksList({ review }: { review: Review }) {
-  const checks = review.checks;
+  const checks = [...review.checks].sort((a, b) => ORDER.indexOf(a.status) - ORDER.indexOf(b.status));
   const count = (s: CheckStatus) => checks.filter((c) => c.status === s).length;
   const tally: { status: CheckStatus; tone: "bad" | "gold" | "neutral"; text: string }[] = [
     { status: "fail", tone: "bad", text: "failed" },
@@ -58,7 +60,7 @@ export function ChecksList({ review }: { review: Review }) {
                     <span className="sr-only">{s.label}: </span>
                     {c.title}
                   </p>
-                  <p className="text-xs text-ink-muted">{CATEGORY_LABEL[c.category]}</p>
+                  <p className="text-xs text-ink-muted">{categoryLabel(c.category)}</p>
                   <p className="mt-1 text-[13px] leading-relaxed text-ink-2">{c.message}</p>
                   {c.findingIds.length > 0 && (
                     <p className="mt-1.5 flex flex-wrap items-center gap-x-1 gap-y-1 text-[13px]">

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { ReviewQueue } from "./_components/inbox/review-queue";
+import { HomeScreen } from "./_components/home/home-screen";
 
-export const metadata: Metadata = { title: "Review queue" };
+export const metadata: Metadata = { title: "Home" };
 
-export default function ReviewQueuePage() {
-  return <ReviewQueue />;
+export default function HomePage() {
+  return <HomeScreen />;
 }

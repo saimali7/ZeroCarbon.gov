@@ -20,8 +20,10 @@ export function shortFileName(fileName: string) {
 export function EvidenceChip({ evidence, onOpen, className = "" }: { evidence: EvidenceRef; onOpen?: (ref: EvidenceRef) => void; className?: string }) {
   const content = (
     <>
-      <FileTypeIcon fileName={evidence.fileName} size={15} />
-      <span className="min-w-0 truncate">
+      <span className="flex shrink-0">
+        <FileTypeIcon fileName={evidence.fileName} size={15} />
+      </span>
+      <span className="min-w-0 [overflow-wrap:anywhere]">
         <span className="font-medium text-ink">{shortFileName(evidence.fileName)}</span>
         <span className="text-ink-muted"> · {evidence.locator}</span>
       </span>

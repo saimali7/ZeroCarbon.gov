@@ -108,7 +108,7 @@ export function ReviewWorkspace({ id }: { id: string }) {
           </div>
           <aside aria-label="Decision and tools" className="flex flex-col gap-6 lg:sticky lg:top-6">
             <DecisionPanel detail={data} review={review} onDecided={onDecided} onOpenLetter={setLetterId} />
-            <AskPanel submissionId={data.id} onOpenEvidence={setEvidence} />
+            <AskPanel submissionId={data.id} compliant={review.status === "compliant"} onOpenEvidence={setEvidence} />
             <ActivityPanel submissionId={data.id} refreshKey={activityKey} />
           </aside>
         </div>
@@ -126,7 +126,7 @@ function Breadcrumb({ current }: { current: string }) {
       <ol className="flex items-center gap-1.5 text-ink-muted">
         <li>
           <Link href="/" className="rounded-sm font-medium text-gold-700 hover:underline">
-            Review queue
+            Home
           </Link>
         </li>
         <li aria-hidden>
